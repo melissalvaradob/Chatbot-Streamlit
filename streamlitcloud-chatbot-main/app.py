@@ -1,8 +1,11 @@
 import streamlit as st
 from langchain.chat_models import ChatOpenAI
 from PIL import Image
+import os
 
 st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit", page_icon = "https://python.langchain.com/img/favicon.ico")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(script_dir, 'logos.png')
 
 with st.sidebar:
 
@@ -17,9 +20,12 @@ with st.sidebar:
         key = "model"
     )
 
-    image = Image.open('logos.png')
-
-    st.image(image, caption = 'OpenAI, Langchain y Streamlit')
+   # Cargar y mostrar la imagen
+    try:
+        image = Image.open(image_path)
+        st.image(image, caption='OpenAI, Langchain y Streamlit')
+    except FileNotFoundError:
+        st.error("El archivo 'logos.png' no se encontró. Asegúrate de que está en el directorio correcto.")
 
     st.markdown(
         """
