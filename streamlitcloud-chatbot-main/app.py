@@ -17,7 +17,7 @@ with st.sidebar:
         key = "model"
     )
 
-    image = Image.open('/logos.png')
+    image = Image.open('logos.png')
 
     st.image(image, caption = 'OpenAI, Langchain y Streamlit')
 
