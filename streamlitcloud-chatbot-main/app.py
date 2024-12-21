@@ -6,7 +6,7 @@ st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit", 
 
 with st.sidebar:
 
-    st.title("Usando la API de OpenAI con Streamlit y Langchain")
+    st.title("Examen Final DMC: Chatbot Personalizado")
 
     model = st.selectbox('Eliga el modelo',
         (
@@ -17,7 +17,8 @@ with st.sidebar:
         key = "model"
     )
 
-    image = Image.open('logos.png')
+    image = Image.open('/logos.png')
+
     st.image(image, caption = 'OpenAI, Langchain y Streamlit')
 
     st.markdown(
@@ -33,9 +34,8 @@ openai_api_key = st.sidebar.text_input("Ingrese tu API Key de OpenAI y dale Ente
 st.sidebar.button('Limpiar historial de chat', on_click = clear_chat_history)
 
 msg_chatbot = """
-        Soy un chatbot que está integrado a la API de OpenAI: 
-
-        ### Preguntas frecuentes
+        Hola, soy tu asistente personal conectado a la API de ChatGPT 
+        ¿Cómo puedo ayudarte?
         
         - ¿Quién eres?
         - ¿Cómo funcionas?
