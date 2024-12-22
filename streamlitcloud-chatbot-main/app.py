@@ -3,12 +3,27 @@ from langchain.chat_models import ChatOpenAI
 from PIL import Image
 import os
 from PyPDF2 import PdfReader 
+from langchain.prompts.chat import ChatPromptTemplate
 
 st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit", page_icon = "https://python.langchain.com/img/favicon.ico")
 script_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(script_dir, 'logos.png')
 
 with st.sidebar:
+    # Prompt Template
+    template = """
+        Eres un asistente experto en temas relacionados a contabilidad, usando información reciente y vigente hasta la fecha de hoy en Perú, 
+        basándote en las normativas y aspectos legales de la constitución peruana.
+        Tu tarea es ayudar a los usuarios con preguntas relacionadas a estos temas.
+    """
+    human_template = "{text}"
+
+    # Plantilla
+    chat_prompt = ChatPromptTemplate.from_messages([
+        ("system", template),
+        ("human", human_template)
+    ])
+
 
     st.title("Examen Final DMC: Chatbot Personalizado")
 
@@ -45,9 +60,9 @@ msg_chatbot = """
         ¿Cómo puedo ayudarte? Aquí te dejo algunas opciones para empezar.
         
 
-        1. ¿Cómo funcionas?
-        2. Hazme un análisis de la variación del TC Dólar.
-        3. Elabora un gráfico comparativo de los sectores más impactantes en el mercado.
+        ¿Cómo funcionas?
+        Hazme un análisis de la variación del TC Dólar.
+        Elabora un gráfico comparativo de los sectores más impactantes en el mercado.
 """
 
 # Se envía el prompt de usuario al modelo de GPT-3.5-Turbo para que devuelva una respuesta
