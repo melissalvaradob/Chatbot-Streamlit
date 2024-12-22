@@ -42,17 +42,15 @@ st.sidebar.button('Limpiar historial de chat', on_click = clear_chat_history)
 
 msg_chatbot = """
         Hola, soy tu asistente personal conectado a la API de ChatGPT 
-        ¿Cómo puedo ayudarte?
+        ¿Cómo puedo ayudarte? Aquí te dejo algunas opciones para empezar.
         
-        - ¿Quién eres?
-        - ¿Cómo funcionas?
-        - ¿Cuál es tu capacidad o límite de conocimientos?
-        - ¿Puedes ayudarme con mi tarea/trabajo/estudio?
-        - ¿Tienes emociones o conciencia?
-        - Lo que desees
+
+        1. ¿Cómo funcionas?
+        2. Hazme un análisis de la variación del TC Dólar.
+        3. Elabora un gráfico comparativo de los sectores más impactantes en el mercado.
 """
 
-## Se envía el prompt de usuario al modelo de GPT-3.5-Turbo para que devuelva una respuesta
+# Se envía el prompt de usuario al modelo de GPT-3.5-Turbo para que devuelva una respuesta
 def get_response_openai(prompt, model):
     
     llm = ChatOpenAI(
@@ -85,8 +83,8 @@ if openai_api_key:
         # Subir archivo PDF solo si se ha ingresado la API Key
         uploaded_file = st.file_uploader("Sube un archivo PDF", type=["pdf"])  # En el sidebar
 
-        # Entrada de texto
-        prompt = st.chat_input("Ingresa tu pregunta o sube un archivo PDF:")
+    # Barra de texto de entrada fuera del sidebar, visible siempre
+    prompt = st.chat_input("Ingresa tu pregunta o sube un archivo PDF:")
 
     if uploaded_file:
         with st.chat_message("user"):
