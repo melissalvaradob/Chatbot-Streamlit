@@ -5,7 +5,7 @@ import os
 from PyPDF2 import PdfReader 
 from langchain.prompts.chat import ChatPromptTemplate
 
-st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit - Melissa Alvarado B.", page_icon = "https://python.langchain.com/img/favicon.ico")
+st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit - Melissa Alvarado B. ", page_icon = "https://python.langchain.com/img/favicon.ico")
 script_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(script_dir, 'logos.png')
 
