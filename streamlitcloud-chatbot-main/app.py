@@ -5,7 +5,7 @@ import os
 from PyPDF2 import PdfReader 
 from langchain.prompts.chat import ChatPromptTemplate
 
-st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit", page_icon = "https://python.langchain.com/img/favicon.ico")
+st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit - Melissa Alvarado B.", page_icon = "https://python.langchain.com/img/favicon.ico")
 script_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(script_dir, 'logos.png')
 
@@ -58,7 +58,7 @@ st.sidebar.button('Limpiar historial de chat', on_click = clear_chat_history)
 
 msg_chatbot = """
         Hola, soy tu chatbot conectado a la API de ChatGPT orientado a la Contabilidad peruana.
-        ¿Cómo puedo ayudarte? Puedes subir solo un archivo PDF o aquí te dejo algunas opciones para empezar.
+        ¿Cómo puedo ayudarte? Puedes subir solo un archivo PDF para que te lo resuma o aquí te dejo algunas opciones para empezar.
         
 
         - ¿Cuáles son las normativas actuales sobre la tributación en Perú?
