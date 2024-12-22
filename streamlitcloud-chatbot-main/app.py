@@ -81,9 +81,12 @@ for message in st.session_state.messages:
         st.write(message["content"])
 
 if openai_api_key:
-    # Entrada del usuario o subida de archivos PDF
-    prompt = st.chat_input("Ingresa tu pregunta o sube un archivo PDF:")
-    uploaded_file = st.file_uploader("Sube un archivo PDF", type=["pdf"], label_visibility="collapsed")  # Integrado en la barra de chat
+    with st.sidebar:
+        # Subir archivo PDF solo si se ha ingresado la API Key
+        uploaded_file = st.file_uploader("Sube un archivo PDF", type=["pdf"])  # En el sidebar
+
+        # Entrada de texto
+        prompt = st.chat_input("Ingresa tu pregunta o sube un archivo PDF:")
 
     if uploaded_file:
         with st.chat_message("user"):
