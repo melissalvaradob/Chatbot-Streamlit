@@ -95,8 +95,11 @@ for message in st.session_state.messages:
 
 if openai_api_key:
     with st.sidebar:
-        # Subir archivo PDF solo si se ha ingresado la API Key
-        uploaded_file = st.file_uploader("Sube un archivo PDF", type=["pdf"])  # En el sidebar
+        # Subir archivo PDF solo si no se ha procesado uno anteriormente
+        if not st.session_state.pdf_processed:
+            uploaded_file = st.file_uploader("Sube un archivo PDF", type=["pdf"])  # En el sidebar
+        else:
+            uploaded_file = None  # Si ya se procesó un archivo, no permite cargar otro
 
     # Barra de texto de entrada fuera del sidebar, visible siempre
     prompt = st.chat_input("Ingresa tu pregunta o sube un archivo PDF:")
@@ -117,6 +120,9 @@ if openai_api_key:
                     response = get_response_openai(prompt, model)
                     st.write(response)
                 st.session_state.messages.append({"role": "assistant", "content": response})
+                
+            # Marcar que el archivo ha sido procesado
+            st.session_state.pdf_processed = True
         except Exception as e:
             st.error(f"Hubo un error procesando el archivo: {e}")
 
