@@ -102,23 +102,28 @@ if openai_api_key:
     prompt = st.chat_input("Ingresa tu pregunta o sube un archivo PDF:")
 
     if uploaded_file:
-        with st.chat_message("user"):
-            st.write("He subido un archivo PDF para que lo analices.")
-        try:
-            with st.spinner("Procesando el archivo PDF..."):
-                pdf_text = extract_text_from_pdf(uploaded_file)
+    with st.chat_message("user"):
+        st.write("He subido un archivo PDF para que lo analices.")
+    
+    try:
+        with st.spinner("Procesando el archivo PDF..."):
+            pdf_text = extract_text_from_pdf(uploaded_file)
 
-            st.session_state.messages.append({"role": "user", "content": "He subido un archivo PDF para que lo analices."})
-            
-            # Generar respuesta basada en el contenido del PDF
-            if openai_api_key:
-                prompt = f"El siguiente es el contenido del archivo PDF:\n{pdf_text}\n\nPor favor, analízalo y dame un resumen breve y conciso o responde preguntas basadas en el contenido."
-                with st.chat_message("assistant"):
-                    response = get_response_openai(prompt, model)
-                    st.write(response)
-                st.session_state.messages.append({"role": "assistant", "content": response})
-        except Exception as e:
-            st.error(f"Hubo un error procesando el archivo: {e}")
+        # Si el archivo fue procesado correctamente, agrega el mensaje de usuario
+        st.session_state.messages.append({"role": "user", "content": "He subido un archivo PDF para que lo analices."})
+
+        # Ahora, genera una respuesta usando el contenido extraído del PDF
+        prompt = f"El siguiente es el contenido del archivo PDF:\n{pdf_text}\n\nPor favor, analízalo y dame un resumen breve y conciso o responde preguntas basadas en el contenido."
+        
+        # Responde usando el modelo de OpenAI
+        if openai_api_key:
+            with st.chat_message("assistant"):
+                response = get_response_openai(prompt, model)
+                st.write(response)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+    except Exception as e:
+        st.error(f"Hubo un error procesando el archivo: {e}")
+
 
     elif prompt:
         # Procesar entrada del usuario
