@@ -2,6 +2,7 @@ import streamlit as st
 from langchain.chat_models import ChatOpenAI
 from PIL import Image
 import os
+from PyPDF2 import PdfReader 
 
 st.set_page_config(page_title = "Chatbot usando Langchain, OpenAI y Streamlit", page_icon = "https://python.langchain.com/img/favicon.ico")
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -62,6 +63,14 @@ def get_response_openai(prompt, model):
 
     return llm.predict(prompt)
 
+# Función para procesar el archivo PDF
+def extract_text_from_pdf(pdf_file):
+    reader = PdfReader(pdf_file)
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text()
+    return text
+
 #Si no existe la variable messages, se crea la variable y se muestra por defecto el mensaje de bienvenida al chatbot.
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [{"role": "assistant", "content" : msg_chatbot}]
@@ -72,27 +81,39 @@ for message in st.session_state.messages:
         st.write(message["content"])
 
 if openai_api_key:
+    # Entrada del usuario o subida de archivos PDF
+    prompt = st.chat_input("Ingresa tu pregunta o sube un archivo PDF:")
+    uploaded_file = st.file_uploader("Sube un archivo PDF", type=["pdf"], label_visibility="collapsed")  # Integrado en la barra de chat
 
-  prompt = st.chat_input("Ingresa tu pregunta")
-  if prompt:
-      st.session_state.messages.append({"role": "user", "content": prompt})
-      with st.chat_message("user"):
-          st.write(prompt)
+    if uploaded_file:
+        with st.chat_message("user"):
+            st.write("He subido un archivo PDF para que lo analices.")
+        try:
+            with st.spinner("Procesando el archivo PDF..."):
+                pdf_text = extract_text_from_pdf(uploaded_file)
 
-  # Generar una nueva respuesta si el último mensaje no es de un assistant, sino de un user, entonces entra al bloque de código
-  if st.session_state.messages[-1]["role"] != "assistant":
-      with st.chat_message("assistant"):
-          with st.spinner("Esperando respuesta, dame unos segundos."):
-              
-              response = get_response_openai(prompt, model)
-              placeholder = st.empty()
-              full_response = ''
-              
-              for item in response:
-                  full_response += item
-                  placeholder.markdown(full_response)
+            st.session_state.messages.append({"role": "user", "content": "He subido un archivo PDF para que lo analices."})
+            
+            # Generar respuesta basada en el contenido del PDF
+            if openai_api_key:
+                prompt = f"El siguiente es el contenido del archivo PDF:\n{pdf_text}\n\nPor favor, analízalo y dame un resumen o responde preguntas basadas en el contenido."
+                with st.chat_message("assistant"):
+                    response = get_response_openai(prompt, model)
+                    st.write(response)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+        except Exception as e:
+            st.error(f"Hubo un error procesando el archivo: {e}")
 
-              placeholder.markdown(full_response)
+    elif prompt:
+        # Procesar entrada del usuario
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.write(prompt)
 
-      message = {"role" : "assistant", "content" : full_response}
-      st.session_state.messages.append(message) #Agrega elemento a la caché de mensajes de chat.
+        # Generar respuesta si el último mensaje no es de un "assistant"
+        if st.session_state.messages[-1]["role"] != "assistant":
+            with st.chat_message("assistant"):
+                with st.spinner("Esperando respuesta, dame unos segundos..."):
+                    response = get_response_openai(prompt, model)
+                    st.write(response)
+            st.session_state.messages.append({"role": "assistant", "content": response})
