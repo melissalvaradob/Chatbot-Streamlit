@@ -35,6 +35,7 @@ with st.sidebar:
         ), 
         key = "model"
     )
+    st.write(f"Modelo seleccionado: {model}")
 
    # Cargar y mostrar la imagen
     try:
@@ -56,13 +57,14 @@ openai_api_key = st.sidebar.text_input("Ingrese tu API Key de OpenAI y dale Ente
 st.sidebar.button('Limpiar historial de chat', on_click = clear_chat_history)
 
 msg_chatbot = """
-        Hola, soy tu asistente personal conectado a la API de ChatGPT 
-        ¿Cómo puedo ayudarte? Aquí te dejo algunas opciones para empezar.
+        Hola, soy tu chatbot conectado a la API de ChatGPT orientado a la Contabilidad peruana.
+        ¿Cómo puedo ayudarte? Puedes subir solo un archivo PDF o aquí te dejo algunas opciones para empezar.
         
 
         - ¿Cuáles son las normativas actuales sobre la tributación en Perú?
         - ¿Cómo debo presentar un balance general según la ley peruana?
         - Explícame cómo afecta la Constitución Peruana a la contabilidad en empresas.
+
 """
 
 # Se envía el prompt de usuario al modelo de GPT-3.5-Turbo para que devuelva una respuesta
@@ -87,6 +89,7 @@ def extract_text_from_pdf(pdf_file):
 #Si no existe la variable messages, se crea la variable y se muestra por defecto el mensaje de bienvenida al chatbot.
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [{"role": "assistant", "content" : msg_chatbot}]
+    st.session_state.pdf_processed = False
 
 # Muestra todos los mensajes de la conversación
 for message in st.session_state.messages:
