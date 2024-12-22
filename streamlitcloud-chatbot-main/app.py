@@ -96,7 +96,7 @@ if openai_api_key:
             
             # Generar respuesta basada en el contenido del PDF
             if openai_api_key:
-                prompt = f"El siguiente es el contenido del archivo PDF:\n{pdf_text}\n\nPor favor, analízalo y dame un resumen o responde preguntas basadas en el contenido."
+                prompt = f"El siguiente es el contenido del archivo PDF:\n{pdf_text}\n\nPor favor, analízalo y dame un resumen breve y conciso o responde preguntas basadas en el contenido."
                 with st.chat_message("assistant"):
                     response = get_response_openai(prompt, model)
                     st.write(response)
