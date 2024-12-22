@@ -60,9 +60,9 @@ msg_chatbot = """
         ¿Cómo puedo ayudarte? Aquí te dejo algunas opciones para empezar.
         
 
-        ¿Cómo funcionas?
-        Hazme un análisis de la variación del TC Dólar.
-        Elabora un gráfico comparativo de los sectores más impactantes en el mercado.
+        - ¿Cuáles son las normativas actuales sobre la tributación en Perú?
+        - ¿Cómo debo presentar un balance general según la ley peruana?
+        - Explícame cómo afecta la Constitución Peruana a la contabilidad en empresas.
 """
 
 # Se envía el prompt de usuario al modelo de GPT-3.5-Turbo para que devuelva una respuesta
